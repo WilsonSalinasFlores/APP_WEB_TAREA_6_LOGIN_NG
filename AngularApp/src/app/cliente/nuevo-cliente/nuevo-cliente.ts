@@ -75,11 +75,10 @@ export class NuevoCliente implements OnInit {
     const match = document.cookie.match(new RegExp('(^| )username=([^;]+)'));
     this.sessionVariable = match ? decodeURIComponent(match[2]) : null;
     if (!this.sessionVariable) {
-      
+
       this.router.navigate(['login']);
       return
     }
-
   }
 
   guardarCliente() {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UsuarioService } from '../../../Services/usuario';
+import { IUsuario } from '../../../Interfases/iusuario';
 
 declare const Swal: any;
 
@@ -15,30 +16,43 @@ export class LoginComponent {
     username: '',
     password: ''
   };
+
   constructor(private usuarioServicio: UsuarioService) {}
 
   
   onLogin() {
-    // Implement login logic here
-    console.log('Iniciar sesión con:', this.usuario);
-    if (this.usuarioServicio.iniciarSesion(this.usuario.username, this.usuario.password)) {
-      // Login exitoso
-      const expires = new Date(Date.now() + 5 * 60 * 1000).toUTCString(); // 5 minutos
-      document.cookie = `username=${encodeURIComponent(this.usuario.username)}; path=/; httpOnly; secure; samesite=strict; expires=${expires}`;
-      console.log('Login exitoso');
+    const email = this.usuario.username;
+    const password = this.usuario.password;
+    this.usuarioServicio.authUsuario(email, password).subscribe({
+      next: (usuario: IUsuario) => {
+        if (usuario.id && usuario.id !== 0) {
+          // Guardar en cookie y sessionStorage
+          const expires = Date.now() + 10 * 60 * 1000;
+          document.cookie = `username=${encodeURIComponent(usuario.nombre)}; path=/; expires=${new Date(expires).toUTCString()}; SameSite=Strict; Secure`;
+          sessionStorage.setItem('username', email);
+          window.location.href = '/cliente';
+          Swal.fire({
+            icon: 'success',
+            title: 'Sesión iniciada',
+            text: 'Bienvenido, ' + usuario.nombre
+          });
 
-      window.location.href = '/cliente';
-    } else {
-      // Login fallido
-     Swal.fire({
-        icon: 'error',
-        title: 'Error de autenticación',
-        text: 'Credenciales inválidas. Por favor, inténtalo de nuevo.',
-        confirmButtonText: 'Aceptar'
-
-      });
-      
-    }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'No ha iniciado sesión',
+            text: 'Usuario o contraseña incorrectos.'
+          });
+        }
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+            title: 'No ha iniciado sesión',
+            text: 'Usuario o contraseña incorrectos.'
+        });
+      }
+    });
   }
 
 }

@@ -16,18 +16,22 @@ export class MenuComponent implements OnInit {
   inicioSession: boolean = false;
 
   ngOnInit(): void {
-    // Obtener el usuario desde una cookie llamada 'username'
     const match = document.cookie.match(new RegExp('(^| )username=([^;]+)'));
-    this.sessionVariable = match ? decodeURIComponent(match[2]) : null;
-    console.log(this.sessionVariable);
-    if (this.sessionVariable) {
+    if (match) {
+      this.sessionVariable = decodeURIComponent(match[2]);
+      // Verifica si la cookie aún existe (no ha expirado)
+      console.log('Cookie "username" encontrada:', match);
       this.inicioSession = true;
     } else {
+      this.sessionVariable = null;
       this.inicioSession = false;
     }
+
     console.log('this.inicioSession:', this.inicioSession);
   }
-  logout() {
+
+  logout(): void {
+    (document as Document).cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     sessionStorage.removeItem('username');
     this.inicioSession = false;
     window.location.href = '/login';

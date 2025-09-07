@@ -1,12 +1,19 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { IUsuario } from '../Interfases/iusuario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
+
+  authUsuario(email: string, password: string) {
+    const url = `${this.rutaAPI}/?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+    return this.http.get<IUsuario>(url).pipe(
+      catchError(this.manejoErrores)
+    );
+  }
   private readonly rutaAPI = 'https://localhost:7004/api/Usuario/auth';
   
   constructor(private http: HttpClient) {}
@@ -15,12 +22,8 @@ export class UsuarioService {
     const msg = error.error?.message || error.statusText || 'Error de red';
     return throwError(() => {
       new Error(msg);
+      console.log(msg);
     });
   }
 
-  iniciarSesion(email: string, password: string) {
-    console.log("Iniciar Sesion");
-    const ruta = this.rutaAPI + '/?email=' + email + '&password=' + password;
-    return this.http.get<IUsuario[]>(ruta).pipe(catchError(this.manejoErrores));
-  }
 }
