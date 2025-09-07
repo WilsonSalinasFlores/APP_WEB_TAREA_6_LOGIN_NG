@@ -16,7 +16,9 @@ export class MenuComponent implements OnInit {
   inicioSession: boolean = false;
 
   ngOnInit(): void {
-    this.sessionVariable = sessionStorage.getItem('username');
+    // Obtener el usuario desde una cookie llamada 'username'
+    const match = document.cookie.match(new RegExp('(^| )username=([^;]+)'));
+    this.sessionVariable = match ? decodeURIComponent(match[2]) : null;
     console.log(this.sessionVariable);
     if (this.sessionVariable) {
       this.inicioSession = true;

@@ -20,7 +20,8 @@ export class ClienteComponent {
   constructor(private clienteServicio: ClienteService, private router: Router) { }
   ngOnInit() {
     
-    this.sessionVariable = sessionStorage.getItem('username');
+    const match = document.cookie.match(new RegExp('(^| )username=([^;]+)'));
+    this.sessionVariable = match ? decodeURIComponent(match[2]) : null;
     if (!this.sessionVariable) {
       
       this.router.navigate(['login']);

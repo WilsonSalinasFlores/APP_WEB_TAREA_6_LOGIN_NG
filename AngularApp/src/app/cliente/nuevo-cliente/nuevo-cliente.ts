@@ -72,7 +72,8 @@ export class NuevoCliente implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sessionVariable = sessionStorage.getItem('username');
+    const match = document.cookie.match(new RegExp('(^| )username=([^;]+)'));
+    this.sessionVariable = match ? decodeURIComponent(match[2]) : null;
     if (!this.sessionVariable) {
       
       this.router.navigate(['login']);

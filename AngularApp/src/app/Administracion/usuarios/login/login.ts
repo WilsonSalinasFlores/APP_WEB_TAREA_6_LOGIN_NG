@@ -23,8 +23,10 @@ export class LoginComponent {
     console.log('Iniciar sesión con:', this.usuario);
     if (this.usuarioServicio.iniciarSesion(this.usuario.username, this.usuario.password)) {
       // Login exitoso
+      const expires = new Date(Date.now() + 5 * 60 * 1000).toUTCString(); // 5 minutos
+      document.cookie = `username=${encodeURIComponent(this.usuario.username)}; path=/; httpOnly; secure; samesite=strict; expires=${expires}`;
       console.log('Login exitoso');
-      sessionStorage.setItem('username', this.usuario.username);
+
       window.location.href = '/cliente';
     } else {
       // Login fallido
