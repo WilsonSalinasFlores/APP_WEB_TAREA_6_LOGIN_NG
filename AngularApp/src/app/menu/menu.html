@@ -12,23 +12,12 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <ng-container *ngIf="inicioSession">
+                        @if (inicioSession) {
                             <a [routerLink]="['/cliente']" class="nav-item nav-link">Cliente</a>
-                        
-                            <div class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Administración</a>
-                                <div class="dropdown-menu bg-light mt-2">
-                                    <a [routerLink]="['/admin/']" class="nav-item nav-link">Usuarios</a>
-                                    <a [routerLink]="['/admin/roles']" class="nav-item nav-link">Roles</a>
-                                    <a [routerLink]="['/admin/accesos']" class="nav-item nav-link">Accesos</a>
-                                </div>
-                            </div>
-                            <a (click)="logout()" class="nav-item nav-link">Logout</a>
-
-                        </ng-container>
-                        <ng-container *ngIf="!inicioSession">
+                            <a   (click)="logout()" class="nav-item nav-link">Logout</a>
+                        } @else {
                             <a [routerLink]="['/login']" class="nav-item nav-link">Login</a>
-                        </ng-container>
+                        }
                     </div>
                 </div>
             </nav>
