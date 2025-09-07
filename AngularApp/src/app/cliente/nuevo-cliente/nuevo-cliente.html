@@ -1,0 +1,106 @@
+<!--
+    nombres: string;
+    apellidos: string;
+    direccion: string;
+    telefono: string;
+    cedula: string;
+    correo: string;
+-->
+
+<div class="container">
+  <h1>{{titulo_formulario}}</h1>
+  <form [formGroup]="clienteForm" (ngSubmit)="guardarCliente()" novalidate>
+    <div class="form-group">
+      <label for="nombres">Nombres</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="nombres"
+        id="nombres"
+        placeholder="Nombres"
+      />
+
+        @if (clienteForm.invalid && (clienteForm.dirty || clienteForm.touched))
+        {
+            <div class="invalid-feedback d-block">
+                @if (clienteForm.hasError('required')) {
+                    <div class="text-danger">El o los nombres son requeridos.</div>
+                }
+            @if (clienteForm.hasError('minlength')) {
+                <div>El nombre debe tener minimo 3 caracteres.</div>
+            }
+        </div>
+        }
+
+    </div>
+    <div class="form-group">
+      <label for="apellidos">Apellidos</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="apellidos"
+        id="apellidos"
+        placeholder="Apellidos"
+      />
+      <p class="help-block">Ingrese los apellidos del cliente</p>
+    </div>
+    <div class="form-group">
+      <label for="direccion">Dirección</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="direccion"
+        id="direccion"
+        placeholder="Dirección"
+      />
+      <p class="help-block">Ingrese la dirección del cliente</p>
+    </div>
+    <div class="form-group">
+      <label for="telefono">Teléfono</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="telefono"
+        id="telefono"
+        placeholder="Teléfono"
+      />
+      <p class="help-block">Ingrese el teléfono del cliente</p>
+    </div>
+    <div class="form-group">
+      <label for="cedula">Cédula</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="cedula"
+        id="cedula"
+        placeholder="Cédula"
+      />
+      <p class="help-block">Ingrese la cédula del cliente</p>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" formControlName="correo" id="correo" placeholder="Email" />
+
+      <p class="help-block">Ingrese el email del cliente</p>
+    </div>
+    <div class="form-group text-end mt-3">
+      <button 
+          class="btn btn-success"
+        type="button" 
+        (click)="guardarCliente()" 
+        [disabled]="clienteForm.invalid">
+        Guardar
+      </button>
+        
+    </div>
+    <div class="form-group text-end mt-3">
+      <button type="button" class="btn btn-primary" [disabled]="!clienteForm.valid">
+
+        Cancelar
+      </button>
+        
+    </div>
+  </form>
+</div>
+ 
