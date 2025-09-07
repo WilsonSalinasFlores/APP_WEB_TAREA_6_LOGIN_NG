@@ -9,6 +9,7 @@ import {
 import { ClienteService } from '../../Services/cliente';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+declare const Swal: any;
 
 @Component({
   selector: 'app-nuevo-cliente',
@@ -17,16 +18,18 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./nuevo-cliente.css'],
 })
 export class NuevoCliente implements OnInit {
+  
+  
   clienteForm: FormGroup = new FormGroup({});
   titulo_formulario: string = 'Registro de Nuevo Cliente';
   id: number = 0;
   Editar: boolean = false;
-
+  sessionVariable: string | null = null;
   constructor(
     private clienteServicio: ClienteService,
     private navegacion: Router,
     private parametrosRuta: ActivatedRoute,
-    
+    private router: Router
   ) {
     this.clienteForm = new FormGroup({
       nombres: new FormControl('', [
@@ -68,7 +71,15 @@ export class NuevoCliente implements OnInit {
         
   }
 
-    ngOnInit(): void {}
+  ngOnInit(): void {
+    this.sessionVariable = sessionStorage.getItem('username');
+    if (!this.sessionVariable) {
+      
+      this.router.navigate(['login']);
+      return
+    }
+
+  }
 
   guardarCliente() {
     if (this.clienteForm.invalid) {
@@ -79,21 +90,35 @@ export class NuevoCliente implements OnInit {
     cliente.id = this.id;
     this.clienteServicio.editarCliente(cliente).subscribe((cliente) => {
       if (cliente == null) {
-        alert('Error al actualizar el cliente');
+        Swal.fire({
+          title: "¡Error!",
+          text: "No se pudo actualizar el cliente, intente nuevamente.",
+          icon: "error"
+        });
         return;
       }
-      alert('Cliente actualizado con exito');
+      Swal.fire({
+        title: "¡Actualizado!",
+        text: "El cliente ha sido actualizado con exito.",
+        icon: "success"
+      });
+      //
+      
       this.clienteForm.reset();
       console.log(cliente);
-      this.navegacion.navigate(['']);
+      this.navegacion.navigate(['/cliente']);
     });
     } else {
     const cliente = this.clienteForm.value;
     this.clienteServicio.guardarCliente(cliente).subscribe((algo: any) => {
-      alert('Cliente guardado con exito');
+      Swal.fire({
+        title: "¡Guardado!",
+        text: "El cliente ha sido guardado con exito.",
+        icon: "success"
+      });
       this.clienteForm.reset();
       console.log(algo);
-      this.navegacion.navigate(['']);
+      this.navegacion.navigate(['/cliente']);
     });
   }
 }

@@ -6,6 +6,7 @@ namespace apiWeb.Data
     {
         public DatosDBContext(DbContextOptions op) : base(op){}
         public DbSet<ClienteModel> Clientes { get; set; }
+        public DbSet<UsuarioModel> UsuarioModel { get; set; } = default!;
 
 
 

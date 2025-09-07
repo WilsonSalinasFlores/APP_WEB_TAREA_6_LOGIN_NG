@@ -14,6 +14,7 @@ export class ClienteService {
     console.log(clientes);
     return clientes;
   }
+  
   manejoErrores(error: HttpErrorResponse) {
     const msg = error.error?.message || error.statusText || 'Error de red';
     return throwError(() => {

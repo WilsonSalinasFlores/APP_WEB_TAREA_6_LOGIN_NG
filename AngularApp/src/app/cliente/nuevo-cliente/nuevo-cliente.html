@@ -84,22 +84,17 @@
 
       <p class="help-block">Ingrese el email del cliente</p>
     </div>
-    <div class="form-group text-end mt-3">
+    <div class="form-group mt-3 d-flex justify-content-end gap-2">
       <button 
-          class="btn btn-success"
-        type="button" 
-        (click)="guardarCliente()" 
-        [disabled]="clienteForm.invalid">
-        Guardar
+      class="btn btn-success"
+      type="button" 
+      (click)="guardarCliente()" 
+      [disabled]="clienteForm.invalid">
+      Guardar
       </button>
-        
-    </div>
-    <div class="form-group text-end mt-3">
-      <button type="button" class="btn btn-primary" [disabled]="!clienteForm.valid">
-
-        Cancelar
+      <button type="button" class="btn btn-primary" [routerLink]="['/cliente']">
+      Cancelar
       </button>
-        
     </div>
   </form>
 </div>

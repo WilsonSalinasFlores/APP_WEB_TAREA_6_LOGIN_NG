@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClienteService } from '../Services/cliente';
 import { ICliente } from '../Interfases/icliente';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 declare const Swal: any;
 
@@ -15,9 +15,18 @@ declare const Swal: any;
 })
 export class ClienteComponent {
   lista_clientes$!: ICliente[];
+  sessionVariable: string | null = null;
 
-  constructor(private clienteServicio: ClienteService) { }
+  constructor(private clienteServicio: ClienteService, private router: Router) { }
   ngOnInit() {
+    
+    this.sessionVariable = sessionStorage.getItem('username');
+    if (!this.sessionVariable) {
+      
+      this.router.navigate(['login']);
+      return
+    }
+    
     this.cargaTabla();
   }
   declare  Swal: any;
